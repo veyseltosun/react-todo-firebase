@@ -16,14 +16,14 @@ function App() {
   const [todos, setTodos] = useState(["Clean the house.", "Feed the dog.", "Do the workout of the day! (WODs)"])
   return (
     <div className={style.bg}>
-      
+
      <div className={style.container}>
       <h3 className={style.heading}>
         Todo App
       </h3>
       <form className={style.form}>
         <input className={style.form} type="text" placeholder="Add Todo"/>
-        <button className={style.button}><AiOutlinePlus size={30}/></button>
+        <button className={style.button}><AiOflex justify-between bg-state-200 p-4 my-2 capitalizeutlinePlus size={30}/></button>
       </form>
       <ul>
         {todos.map( (todo, index) => {
