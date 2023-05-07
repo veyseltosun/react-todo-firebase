@@ -1,4 +1,5 @@
 import {AiOutlinePlus} from "react-icons/ai";
+
 import Todo from "./Todo";
 import { useState } from "react";
 const style = {
@@ -23,7 +24,7 @@ function App() {
       </h3>
       <form className={style.form}>
         <input className={style.form} type="text" placeholder="Add Todo"/>
-        <button className={style.button}><AiOflex justify-between bg-state-200 p-4 my-2 capitalizeutlinePlus size={30}/></button>
+        <button className={style.button}><AiOutlinePlus justify-between bg-state-200 p-4 my-2 capitalizeutlinePlus size={30}/></button>
       </form>
       <ul>
         {todos.map( (todo, index) => {
