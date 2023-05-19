@@ -1,7 +1,10 @@
 import {AiOutlinePlus} from "react-icons/ai";
+import {db} from "./firebase";
+import {query, collection, onSnapshot, updateDoc, doc} from "firebase/firestore";
+
 
 import Todo from "./Todo";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 const style = {
   bg:`h-screen w-screen p-4 bg-gradient-to-r from-[#2f80ed] to-[#1cb5e0]`,
   container:`bg-slate-100 max-w-[500px] rounded-md shsdow-xl p-4`,
@@ -14,7 +17,35 @@ const style = {
 }
 
 function App() {
-  const [todos, setTodos] = useState(["Clean the house.", "Feed the dog.", "Do the workout of the day! (WODs)"])
+  const [todos, setTodos] = useState([]);
+
+  // create todo
+  // read todo from firebase
+  useEffect(() => {
+     
+    const q = query(collection(db, "todos"))
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      let todosArr = [];
+      querySnapshot.forEach((doc) => {
+        todosArr.push({...doc.data(), id:doc.id})
+
+      })
+      setTodos(todosArr)
+
+    })
+    return () => unsubscribe
+
+  },[])
+  // update todo
+  const toggleComplete = async (todo) => {
+     await updateDoc(doc(db, "todos", todo.id), {
+      completed: !todo.completed
+     })
+  }
+  // delete todo
+
+
+
   return (
     <div className={style.bg}>
 
@@ -30,12 +61,12 @@ function App() {
         {todos.map( (todo, index) => {
           return(
 
-            <Todo key={index} todo={todo}/>
+            <Todo key={index} todo={todo} toggleComplete={toggleComplete}/>
           )
 
         })}
       </ul>
-      <p className={style.count}>You have 2 todos.</p>
+      <p className={style.count}>You have {todos.length} todos</p>
      </div>
       
     </div>
