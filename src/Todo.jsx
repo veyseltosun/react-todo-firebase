@@ -12,13 +12,13 @@ const style = {
 
 }
 
-const Todo = ({todo, toggleComplete}) => {
+const Todo = ({todo, toggleComplete, deleteTodo}) => {
   return (
     <li className={todo.completed ? style.liCompleted : style.li }>
         <div className={style.row}>
             <input onChange={() => toggleComplete(todo)} type='checkbox' checked={todo.completed ? "checked" : ""}/>
             <p onClick={() => toggleComplete(todo)} className={todo.completed ? style.textCompleted : style.text}>{todo.text}</p>
-            <button className={style.button}>{<FaRegTrashAlt/>}</button>
+            <button onClick={() => deleteTodo(todo.id)} className={style.button}>{<FaRegTrashAlt/>}</button>
 
         </div>
     </li>

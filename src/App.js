@@ -1,6 +1,6 @@
 import {AiOutlinePlus} from "react-icons/ai";
 import {db} from "./firebase";
-import {query, collection, onSnapshot, updateDoc, doc} from "firebase/firestore";
+import {query, collection, onSnapshot, updateDoc, doc, addDoc, deleteDoc} from "firebase/firestore";
 
 
 import Todo from "./Todo";
@@ -18,8 +18,26 @@ const style = {
 
 function App() {
   const [todos, setTodos] = useState([]);
+  const [input, setInput] = useState("");
+  
 
   // create todo
+  const createTodo = async (e) => {
+    e.preventDefault(e);
+    if(input === "" ){
+      alert("please enter a valid todo")
+      return
+    }
+    await addDoc(collection(db, "todos"), {
+      text:input,
+      completed:false
+    })
+
+    setInput("");
+    
+    
+    
+  }
   // read todo from firebase
   useEffect(() => {
      
@@ -43,6 +61,9 @@ function App() {
      })
   }
   // delete todo
+  const deleteTodo = async(id) => {
+    await deleteDoc(doc(db, "todos", id))
+  }
 
 
 
@@ -53,20 +74,21 @@ function App() {
       <h3 className={style.heading}>
         Todo App
       </h3>
-      <form className={style.form}>
-        <input className={style.form} type="text" placeholder="Add Todo"/>
+      <form  onSubmit={createTodo}  className={style.form}>
+        <input value={input} onChange={(e) => setInput(e.target.value)} className={style.form} type="text" placeholder="Add Todo"/>
         <button className={style.button}><AiOutlinePlus justify-between bg-state-200 p-4 my-2 capitalizeutlinePlus size={30}/></button>
       </form>
       <ul>
         {todos.map( (todo, index) => {
           return(
 
-            <Todo key={index} todo={todo} toggleComplete={toggleComplete}/>
+            <Todo key={index} todo={todo} toggleComplete={toggleComplete} deleteTodo={deleteTodo}/>
           )
 
         })}
       </ul>
-      <p className={style.count}>You have {todos.length} todos</p>
+      {todos.length ? <p className={style.count}>You have {todos.length} todos</p> : ""}
+      
      </div>
       
     </div>
